@@ -1,64 +1,67 @@
--- x = 500
--- y = 200
+require 'lamp'
+require 'tunnel'
 
--- love.keyboard.setKeyRepeat(true)
+function love.load()
+    love.keyboard.setKeyRepeat(true)
 
--- lamp_a_state = true
+    lamp_a = define_lamp(true, 200, 100, 50)
+    lamp_b = define_lamp(true, 125, 200, 50)
+    lamp_c = define_lamp(false, 275, 200, 50)
+    lamp_d = define_lamp(false, 200, 300, 50)
 
-lamp_a = {}
-lamp_a['state'] = true
-lamp_a['x'] = 100
-lamp_a['y'] = 100
-lamp_a['radius'] = 50
+    lamp_z = define_lamp(true, 400, 100, -20)
 
-lamp_b = {}
-lamp_b['state'] = true
-lamp_b['x'] = 200
-lamp_b['y'] = 200
-lamp_b['radius'] = 50
+    tunnel_1 = define_tunnel(true, 550, 200, 30, 10, 75, 2)
+
+    t_since_last_update = 0
+end
+
+function love.update(dt)
+    t_since_last_update = t_since_last_update + dt
+    
+    if t_since_last_update >= 0.05 then
+        grow_tunnel(tunnel_1)
+
+        t_since_last_update = 0
+    end
+
+end
 
 function love.draw()
-    -- love.graphics.print("Hello World", x, y)
 
-    if lamp_a['state'] == true then
-        love.graphics.circle("fill", lamp_a['x'], lamp_a['y'], lamp_a['radius'])
-    else
-        love.graphics.circle("line", lamp_a['x'], lamp_a['y'], lamp_a['radius'])
-    end
+    love.graphics.print("Black Box Puzzle 001", 0, 0)
 
-    if lamp_b['state'] == true then
-        love.graphics.circle("fill", lamp_b['x'], lamp_b['y'], lamp_b['radius'])
-    else
-        love.graphics.circle("line", lamp_b['x'], lamp_b['y'], lamp_b['radius'])
-    end
+    draw_lamp(lamp_a)
+    draw_lamp(lamp_b)
+    draw_lamp(lamp_c)
+    draw_lamp(lamp_d)
+
+    draw_lamp(lamp_z)
+
+    draw_tunnel(tunnel_1)
+
 end
 
 function love.keypressed(key, isrepeat)
     if key == "up" then
-        lamp_a['state'] = true
-    elseif key == "down" then
-        lamp_a['state'] = false
+        toggle_lamp(lamp_a)
     end
-
+    if key == "down" then
+        toggle_lamp(lamp_d)
+    end
     if key == "left" then
-        lamp_b['state'] = true
-    elseif key == "right" then
-        lamp_b['state'] = false
+        toggle_lamp(lamp_b)
+    end
+    if key == "right" then
+        toggle_lamp(lamp_c)
     end
 
-    -- if key == "right" then
-    --     x = x + 5
-    -- elseif key == "left" then
-    --     x = x - 5
-    -- end
-
-    -- if key == "up" then
-    --     y = y - 5
-    -- end
-
-    -- if key == "down" then
-    --     y = y + 5
-    -- end
+    if key == "a" and tunnel_1['growth'] < 0 then
+        tunnel_1['growth'] = -tunnel_1['growth']
+    end
+    if key == "s" and tunnel_1['growth'] > 0 then
+        tunnel_1['growth'] = -tunnel_1['growth']
+    end
 
     if key == "escape" then
       love.event.quit()
