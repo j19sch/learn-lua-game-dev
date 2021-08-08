@@ -5,7 +5,12 @@ function love.load()
     love.window.setMode(400, 240)  -- PlayDate size
     love.window.setTitle("Playdate black box puzzles")
 
-    title_screen_font = love.graphics.newFont("JetBrainsMono-Medium.ttf", 20)
+    love.graphics.setColor(0, 0, 0)
+    local grey = 222/255
+    love.graphics.setBackgroundColor(grey, grey, grey)
+
+    large_font = love.graphics.newFont("JetBrainsMono-Medium.ttf", 20)
+    main_font = love.graphics.newFont("JetBrainsMono-Medium.ttf", 14)
     
     love.keyboard.setKeyRepeat(true)
 
@@ -39,7 +44,8 @@ end
 
 function love.draw()
     if game_state == "title_screen" then
-        love.graphics.print("Playdate Black Box Puzzles", title_screen_font, 40, 140, -0.25)
+        love.graphics.print("Playdate Black Box Puzzles", large_font, 40, 120, -0.25)
+        love.graphics.print("inspired by blackboxpuzzles.workroomprds.com", main_font, 30, 150, -0.25)
     elseif game_state == "puzzle_001" then
         love.graphics.print("Black Box Puzzle 001", 0, 0)     
         draw_lamp(lamp_a)
