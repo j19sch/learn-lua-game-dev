@@ -1,5 +1,6 @@
 require 'lamp'
 require 'tunnel'
+require 'workroomprds'
 
 function love.load()
     love.window.setMode(400, 240)  -- PlayDate size
@@ -14,6 +15,8 @@ function love.load()
     
     love.keyboard.setKeyRepeat(true)
 
+    -- Playdate puzzle 001
+
     lamp_a = define_lamp(true, 95, 50, 25)
     lamp_b = define_lamp(true, 35, 110, 25)
     lamp_c = define_lamp(false, 95, 110, 25)
@@ -22,6 +25,10 @@ function love.load()
     lamp_z = define_lamp(true, 95, 200, -20)
 
     tunnel_1 = define_tunnel(true, 300, 110, 0, 10, 75, 2)
+
+    -- Workroomprds Black Box Piuzzle 22
+    button_1 = define_button(false, 100, 110, 25)
+    light_1 = define_light(false, 250, 110, 25)
 
     t_since_last_update = 0
 
@@ -38,6 +45,11 @@ function love.update(dt)
 
             t_since_last_update = 0
         end
+    elseif game_state == "bb_puzzle22" then
+        if t_since_last_update >= 0.5 and button_1['state'] == true then -- this does not work with 1 instead 0f 0.5
+           toggle_button(button_1)
+           t_since_last_update = 0
+        end
     end
 
 end
@@ -47,7 +59,7 @@ function love.draw()
         love.graphics.print("Playdate Black Box Puzzles", large_font, 40, 120, -0.25)
         love.graphics.print("inspired by blackboxpuzzles.workroomprds.com", main_font, 30, 150, -0.25)
     elseif game_state == "puzzle_001" then
-        love.graphics.print("Black Box Puzzle 001", 0, 0)     
+        love.graphics.print("Playdate Black Box Puzzle 001", 0, 0)
         draw_lamp(lamp_a)
         draw_lamp(lamp_b)
         draw_lamp(lamp_c)
@@ -56,6 +68,11 @@ function love.draw()
         draw_lamp(lamp_z)
 
         draw_tunnel(tunnel_1)
+    elseif game_state == "bb_puzzle22" then
+        love.graphics.print("Black Box Puzzle 22", 0, 0)
+        draw_button(button_1)
+        draw_light(light_1)
+
     end
 
 end
@@ -63,7 +80,8 @@ end
 function love.keypressed(key, isrepeat)
     if game_state == "title_screen" then
         if key == "space" then
-            game_state = "puzzle_001"
+            -- game_state = "puzzle_001"
+            game_state = "bb_puzzle22"
             t_since_last_update = 0
         end
 
@@ -88,9 +106,17 @@ function love.keypressed(key, isrepeat)
                 tunnel_1['growth'] = -tunnel_1['growth']
             end
 
-            if key == "escape" then
-              love.event.quit()
-            end
+    elseif game_state == "bb_puzzle22" then
+        if key == "up" then
+            toggle_light(light_1)
+            toggle_button(button_1)
+        end
+
+    end
+
+
+    if key == "escape" then
+          love.event.quit()
     end
 
 end
