@@ -27,10 +27,8 @@ function love.load()
     tunnel_1 = define_tunnel(true, 300, 110, 0, 10, 75, 2)
 
     -- Workroomprds Black Box Piuzzle 22
-    button_1 = define_button(false, 100, 110, 25)
-    light_1 = define_light(false, 250, 110, 25)
-
-    t_since_last_update = 0
+    setup_puzzle_22()
+    t_since_last_update = 0  -- ToDo: remove?
 
     game_state = "title_screen"
 end
@@ -46,10 +44,7 @@ function love.update(dt)
             t_since_last_update = 0
         end
     elseif game_state == "bb_puzzle22" then
-        if t_since_last_update >= 0.5 and button_1['state'] == true then -- this does not work with 1 instead 0f 0.5
-           toggle_button(button_1)
-           t_since_last_update = 0
-        end
+        update_puzzle_22()
     end
 
 end
@@ -69,9 +64,7 @@ function love.draw()
 
         draw_tunnel(tunnel_1)
     elseif game_state == "bb_puzzle22" then
-        love.graphics.print("Black Box Puzzle 22", 0, 0)
-        draw_button(button_1)
-        draw_light(light_1)
+        draw_puzzle_22()
 
     end
 
@@ -107,11 +100,7 @@ function love.keypressed(key, isrepeat)
             end
 
     elseif game_state == "bb_puzzle22" then
-        if key == "up" then
-            toggle_light(light_1)
-            toggle_button(button_1)
-        end
-
+        keypressed_puzzle_22(key)
     end
 
 
