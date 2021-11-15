@@ -37,9 +37,11 @@ end
 
 function draw_light(light)
     if light['state'] == true then
-        love.graphics.circle("fill", light['x'], light['y'], light['radius'])
+        love.graphics.circle("line", light['x'], light['y'], light['radius'])
+        love.graphics.circle("fill", light['x'] + 1, light['y'] + 1, light['radius'] - 6)
     else
         love.graphics.circle("line", light['x'], light['y'], light['radius'])
+        love.graphics.circle("line", light['x'] + 1, light['y'] + 1, light['radius'] - 6)
     end
 end
 
