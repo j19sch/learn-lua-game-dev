@@ -11,16 +11,19 @@ function draw_puzzle_22()
     draw_light(light_1)
 end
 
-function update_puzzle_22()
-    if t_since_last_update >= 0.5 and button_1['state'] == true then -- this does not work with 1 instead 0f 0.5
+function update_puzzle_22(dt)
+    button_1['reset-timer'] = button_1['reset-timer'] + dt
+
+    if button_1['state'] == true and button_1['reset-timer'] >= button_1['reset'] then
         toggle_button(button_1)
-        t_since_last_update = 0
     end
 end
 
 function keypressed_puzzle_22(key)
     if key == "up" then
-        toggle_light(light_1)
-        toggle_button(button_1)
+        if button_1['state'] == false then
+            toggle_button(button_1)
+            toggle_light(light_1)
+        end
     end
 end

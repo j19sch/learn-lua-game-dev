@@ -36,7 +36,6 @@ end
 function love.update(dt)
     t_since_last_update = t_since_last_update + dt
     
-    
     if game_state == "puzzle_001" then
         if t_since_last_update >= 0.05 then
             grow_tunnel(tunnel_1)
@@ -44,7 +43,8 @@ function love.update(dt)
             t_since_last_update = 0
         end
     elseif game_state == "bb_puzzle22" then
-        update_puzzle_22()
+        -- t_button_1_reset = 0  -- leads to buggy behavior if here instead of inside toggle function
+        update_puzzle_22(dt)
     end
 
 end
